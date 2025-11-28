@@ -1,7 +1,16 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct AppList {
     pub name: String,
     pub description: String,
     pub exec: String,
     pub icon_path: std::path::PathBuf,
     pub type_file: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct CacheFile {
+    pub hash: u64,
+    pub apps: Vec<AppList>
 }
