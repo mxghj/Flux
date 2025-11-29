@@ -9,7 +9,7 @@ pub fn list_apps(
     _exec: String,
     icon: Option<PathBuf>,
 ) -> iced::widget::Button<'static, Message> {
-    let mut content: Row<'_, Message> = Row::new();
+    let mut _content: Row<'_, Message> = Row::new();
 
     if !icon.is_none() {
         // If icon exists, i show it
@@ -19,7 +19,7 @@ pub fn list_apps(
         // Get icon extension like svg or png
 
         if ext == "svg" {
-            content = row![
+            _content = row![
                 svg(path)
                     .width(40)
                     .height(40),
@@ -31,7 +31,7 @@ pub fn list_apps(
         } else {
             // If icon is not svg, use image widget
             let img = resize_icon(path.as_path().to_str().unwrap_or_default(), 40);
-            content = row![
+            _content = row![
                 image(img)
                     .width(40)
                     .height(40),
@@ -40,9 +40,9 @@ pub fn list_apps(
         };
 
     } else {
-        content = row![text(name)].align_y(iced::Alignment::Center);
+        _content = row![text(name)].align_y(iced::Alignment::Center);
     }
-    Button::new(content)
+    Button::new(_content)
             .padding(iced::Padding {
                 top: 15.0,
                 left: 25.0,
