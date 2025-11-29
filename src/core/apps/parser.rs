@@ -2,7 +2,7 @@ use std::{ffi::OsStr, fs, path::PathBuf};
 
 use freedesktop_file_parser::EntryType;
 
-use crate::core::apps::{model::AppList, scanner::scan_desktop_files};
+use crate::core::apps::{model::AppList, scanner::scan_desktop_files, utils::get_icon_path};
 
 pub fn parse_data() -> Vec<AppList> {
     let desktops_paths: Vec<PathBuf> = scan_desktop_files();
@@ -37,8 +37,10 @@ pub fn parse_data() -> Vec<AppList> {
         let description = desktop_file.entry.comment;
         // Get description of the app in .desktop file
 
-        let icon = desktop_file.entry.icon;
+        let icon_name = desktop_file.entry.icon.unwrap_or_default().content.trim().to_string();
         // Get icon of the app in .desktop file
+
+        let icon_path = get_icon_path(&icon_name);
 
         if let EntryType::Application(app) = &desktop_file.entry.entry_type {
             let mut exec = match &app.exec {
@@ -57,7 +59,7 @@ pub fn parse_data() -> Vec<AppList> {
                     name: name,
                     description: description.unwrap_or_default().default,
                     exec: exec,
-                    icon_path: icon.unwrap_or_default().content.into(),
+                    icon_path: icon_path.unwrap_or_default(),
                     type_file: "Application".to_string()
                 }
             );

@@ -33,7 +33,7 @@ pub fn indexing() -> Option<Vec<AppList>> {
 
     let cache_file = CacheFile {
         hash,
-        apps: parse_data()
+        apps: parse_data() // Parse apps
     };
     save_cache(&cache_file, &cache_path).ok()?;
     return Some(cache_file.apps);
@@ -41,15 +41,14 @@ pub fn indexing() -> Option<Vec<AppList>> {
 }
 
 fn load_cache(path: &Path) -> Result<CacheFile, Box<dyn std::error::Error>> {
-     // read file and make it to struct again
+     // read cache file and return the apps and hash
      let data = fs::read(path)?;
      Ok(bincode::deserialize(&data)?)
 }
 
 fn save_cache(cache: &CacheFile, path: &Path) -> Result<(), Box<dyn std::error::Error>> {
-       // I turn struct to bytes with bincode
        let data = bincode::serialize(cache)?;
-       // then write bytes to file
        fs::write(path, data)?;
        Ok(())
+       // Save the cache
 }
