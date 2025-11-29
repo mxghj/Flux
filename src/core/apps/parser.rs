@@ -2,13 +2,12 @@ use std::{ffi::OsStr, fs, path::PathBuf};
 
 use freedesktop_file_parser::EntryType;
 
-use crate::core::apps::{model::AppList, scanner::scan_desktop_files, utils::get_icon_path};
+use crate::core::apps::{model::AppList, scanner::scan_desktop_files, utils::{get_icon_path}};
 
 pub fn parse_data() -> Vec<AppList> {
     let desktops_paths: Vec<PathBuf> = scan_desktop_files();
     let mut apps_info: Vec<AppList> = Vec::new();
     for entry in &desktops_paths {
-
         if entry.extension() != Some(OsStr::new("desktop")) || entry.is_dir()
         {
             continue;

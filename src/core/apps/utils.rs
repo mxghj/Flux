@@ -1,7 +1,7 @@
 use std::{fs, path::{Path, PathBuf}, time::UNIX_EPOCH};
 
 use freedesktop_icons::lookup;
-use iced::{Task, widget, window};
+use iced::{Task, widget, window::{self}};
 use image::ImageReader;
 
 use crate::{ui::app::{ Message}};
@@ -74,4 +74,26 @@ pub fn resize_icon(path: &str, size: u32) -> iced::widget::image::Handle {
     let resized = image::imageops::resize(&img, size, size, image::imageops::FilterType::Lanczos3);
 
     widget::image::Handle::from_rgba(resized.width(), resized.height(), resized.into_raw())
+}
+
+pub fn flatpak_apps() -> Option<Vec<PathBuf>> {
+    // get desktop files for flatpak apps
+    let base = PathBuf::from("/var/lib/flatpak/app");
+    let entries = fs::read_dir(&base).ok()?;
+
+    let mut result = Vec::new();
+
+    for folder in entries.flatten().map(|e| e.path()) {
+        if folder.is_dir() {
+            let p = folder.join("current/active/export/share/applications");
+            if let Ok(desktop_files) = fs::read_dir(&p) {
+                for file in desktop_files.flatten() {
+                    result.push(file.path());
+                    // add all desktop files to list
+                }
+            }
+        }
+    }
+
+    Some(result)
 }

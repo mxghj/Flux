@@ -1,5 +1,7 @@
 use std::{fs, path::PathBuf, vec};
 
+use crate::core::apps::utils::flatpak_apps;
+
 pub fn scan_desktop_files() -> Vec<PathBuf> {
     let mut desktops_paths: Vec<PathBuf> = Vec::new();
 
@@ -10,5 +12,6 @@ pub fn scan_desktop_files() -> Vec<PathBuf> {
             // If entry don't get any errors push in desktops_paths all paths will get from system and user apps dir
         }
     }
+    desktops_paths.extend(flatpak_apps().unwrap_or_default());
     desktops_paths
 }

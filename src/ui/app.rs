@@ -1,9 +1,8 @@
 use iced::{Color, Element, Padding, Pixels, Settings, Size, Subscription, Task, Theme, event, keyboard::{self, Key, key::Named}, theme::Palette, widget::{Column, text_input}, window::{self, settings::PlatformSpecific}};
 
-use crate::{core::apps::{model::AppList, utils::open_app}, ui::widgets::{list_apps::list_apps, text_input::input_box}};
+use crate::{core::apps::{model::AppList, utils::{open_app}}, ui::widgets::{list_apps::list_apps, text_input::input_box}};
 
 pub fn run_ui(apps: Vec<AppList>) -> iced::Result{
-
     let window = window::Settings {
         size: Size {
             width: 774.0,
