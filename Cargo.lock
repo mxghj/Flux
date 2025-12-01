@@ -969,19 +969,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98de4bbd547a563b716d8dfa9aad1cb19bfab00f4fa09a6a4ed21dbcf44ce9c4"
 
 [[package]]
-name = "flux"
-version = "0.1.0"
-dependencies = [
- "bincode",
- "dirs 6.0.0",
- "freedesktop-file-parser",
- "freedesktop-icons",
- "iced",
- "image 0.25.9",
- "serde",
-]
-
-[[package]]
 name = "font-types"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3237,6 +3224,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6637bab7722d379c8b41ba849228d680cc12d0a45ba1fa2b48f2a30577a06731"
 dependencies = [
  "float-cmp",
+]
+
+[[package]]
+name = "stryde"
+version = "0.1.0"
+dependencies = [
+ "bincode",
+ "dirs 6.0.0",
+ "freedesktop-file-parser",
+ "freedesktop-icons",
+ "iced",
+ "image 0.25.9",
+ "serde",
 ]
 
 [[package]]

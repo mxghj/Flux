@@ -2,7 +2,7 @@
 
 ⚠️ Currently in development ⚠️
 
-# Flux
+# Stryde
 
 A fast application launcher for Linux written in Rust
 
@@ -16,9 +16,9 @@ https://github.com/user-attachments/assets/4d4e770a-166c-49e8-b915-9263ddbee499
 
 ## Screenshots
 
-<img width="1920" height="1080" alt="Flux 1" src="https://github.com/user-attachments/assets/6db51e23-c93f-4291-bf4a-7aa6bc665ff9" />
+<img width="1920" height="1080" alt="Stryde 1" src="https://github.com/user-attachments/assets/6db51e23-c93f-4291-bf4a-7aa6bc665ff9" />
 
-<img width="1920" height="1080" alt="Flux 2" src="https://github.com/user-attachments/assets/693a831c-3fd1-4644-ba29-eaeaf90e4cef" />
+<img width="1920" height="1080" alt="Stryde 2" src="https://github.com/user-attachments/assets/693a831c-3fd1-4644-ba29-eaeaf90e4cef" />
 
 
 ## Proof

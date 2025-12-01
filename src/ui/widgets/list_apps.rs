@@ -23,8 +23,8 @@ pub fn list_apps(
         if ext == "svg" {
             _content = row![
                 svg(path)
-                    .width(40)
-                    .height(40),
+                    .width(37)
+                    .height(37),
                 text(name)
             ]
             .spacing(10)
@@ -32,10 +32,10 @@ pub fn list_apps(
         // If icon is svg, i show with svg widget
         } else {
             // If icon is not svg, use image widget
-            if let Some(img) = resize_icon(path.as_path().to_str().unwrap_or_default(), 40){      
+            if let Some(img) = resize_icon(path.as_path().to_str().unwrap_or_default(), 37){      
                 _content = row![image(img)
-                    .width(40)
-                    .height(40),
+                    .width(37)
+                    .height(37),
                 text(name)
             ].spacing(10);
             }else {
