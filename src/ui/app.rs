@@ -149,13 +149,8 @@ impl StrydeUI {
                                 x: 0.0,
                                 y: self.selected as f32 * 55.0
                             });
-                        }else {
-                            self.selected = 0;
-                            return scrollable::scroll_to(Id::new("scrollable"), AbsoluteOffset {
-                                x: 0.0,
-                                y:  self.selected as f32 * 55.0,
-                            });
                         }
+                        Task::none()
                     }
                     // If user pressed Arrow Down, move to the next app
                     keyboard::Key::Named(Named::ArrowUp) => {
@@ -165,13 +160,8 @@ impl StrydeUI {
                                 x: 0.0,
                                 y:  self.selected as f32 * 55.0
                             });
-                        }else {
-                            self.selected = self.app_list.len() -1;
-                            return scrollable::scroll_to(Id::new("scrollable"), AbsoluteOffset {
-                                x: 0.0,
-                                y:  self.selected as f32 * 55.0,
-                            });
                         }
+                        Task::none()
                     }
                     // If user pressed Arrow Up, move to the previous app
                     _ => Task::none()
