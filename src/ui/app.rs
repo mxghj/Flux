@@ -1,12 +1,12 @@
-use iced::{Color, Element, Padding, Pixels, Settings, Size, Subscription, Task, Theme, event, keyboard::{self, Key, key::Named}, theme::Palette, widget::{Column, scrollable::{self, AbsoluteOffset, Id}, text_input}, window::{self, settings::PlatformSpecific}};
+use iced::{Element, Padding, Pixels, Settings, Size, Subscription, Task, Theme, event, keyboard::{self, Key, key::Named}, theme::Palette, widget::{Column, scrollable::{self, AbsoluteOffset, Id}, text_input}, window::{self, settings::PlatformSpecific}};
 
-use crate::{core::apps::{model::AppList, utils::open_app}, ui::widgets::{input_with_list::{input_with_list}, list_apps::list_apps}};
+use crate::{core::apps::{model::AppList, utils::open_app}, toml_files::Config, ui::widgets::{input_with_list::input_with_list, list_apps::list_apps}};
 
-pub fn run_ui(apps: Vec<AppList>) -> iced::Result{
+pub fn run_ui(apps: Vec<AppList>, settings: Config, theme: Theme) -> iced::Result{
     let window = window::Settings {
         size: Size {
-            width: 774.0,
-            height: 500.0,
+            width: settings.app_width,
+            height: settings.app_height,
         },
         // Set window size
         position: window::Position::Centered,
@@ -22,13 +22,17 @@ pub fn run_ui(apps: Vec<AppList>) -> iced::Result{
         },
         exit_on_close_request: true,
         transparent: true,
+        min_size: Some(Size {
+            width: 774.0,
+            height: 500.0,
+        }),
         ..Default::default()
     };
 
     iced::application("Stryde", StrydeUI::update, StrydeUI::view).settings(Settings {
         id: Some("stryde".into()),
-        default_text_size: Pixels::from(16),
-        antialiasing: false,
+        default_text_size: Pixels::from(settings.list_text_size),
+        antialiasing: settings.antialiasing,
         // simple text render
         fonts: vec![],
         default_font: Default::default(),
@@ -37,7 +41,7 @@ pub fn run_ui(apps: Vec<AppList>) -> iced::Result{
     .theme(StrydeUI::theme)
     .subscription(StrydeUI::subscription)
     .run_with(move || {
-        let stryde = StrydeUI::new(apps);
+        let stryde = StrydeUI::new(apps, settings.input_text_size, theme);
 
         let focus_task = text_input::focus::<Message>("input");
         // Auto focus to input_text
@@ -66,16 +70,20 @@ pub struct StrydeUI {
     app_list: Vec<AppList>,
     save_list: Vec<AppList>,
     selected: usize,
+    input_text_size: u16,
+    theme: Theme
 }
 
 impl StrydeUI {
-    fn new(app_list: Vec<AppList>) -> Self {
+    fn new(app_list: Vec<AppList>, input_text_size: u16, theme: Theme) -> Self {
         // make new app state with list of apps
         Self {
             text: "".into(),
             save_list: Vec::new(),
             app_list,
             selected: 0,
+            input_text_size: input_text_size.clone(),
+            theme: theme
         }
     }
 
@@ -90,15 +98,16 @@ impl StrydeUI {
     }
 
     fn theme(&self) -> Theme {
+        let pallete = self.theme.palette();
         // custom dark theme
         Theme::custom(
-            "Dark".to_string(),
+            "Stryde".to_string(),
             Palette {
-                background: Color::from_rgb(0.063, 0.063, 0.071),
-                text: Color::WHITE,
-                primary: Color::from_rgb(0.055, 0.122, 0.165),
-                success: Color::from_rgb(0.306, 0.306, 0.318), // This is for divider or placeholder,
-                danger: Color::from_rgb(25.0/255.0, 25.0/255.0, 28.0/255.0), // This is for selected app,
+                background: pallete.background,
+                text: pallete.text,
+                primary: pallete.primary,
+                success: pallete.success,
+                danger: pallete.danger,
             },
         )
     }
@@ -191,7 +200,7 @@ impl StrydeUI {
                         ).on_press(Message::Open(entry.exec.clone()))))
         } // Make a list with all apps
         
-        input_with_list(list_column, &self.text, &self.theme())
+        input_with_list(list_column, &self.text, &self.theme(), self.input_text_size)
         // Make a input, divider, list
     }
 }

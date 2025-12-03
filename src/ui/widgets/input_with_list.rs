@@ -10,7 +10,8 @@ use crate::ui::app::Message;
 pub fn input_with_list<'a>(
     list_column: Column<'a, Message>,
     text: &str,
-    theme: &Theme
+    theme: &Theme,
+    input_text_size: u16
 ) -> iced::Element<'a, Message> {
 
     let palette = theme.palette();
@@ -20,7 +21,7 @@ pub fn input_with_list<'a>(
             TextInput::new("Type commands, search...", text)
                 .on_input(Message::SearchChanged)
                 .on_submit(Message::Submit)
-                .size(18)
+                .size(input_text_size)
                 .id("input")
                 .style(move |theme: &Theme, _| {
                     // custom style for input
