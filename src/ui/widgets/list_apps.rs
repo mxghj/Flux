@@ -9,7 +9,8 @@ pub fn list_apps(
     _exec: String,
     icon: Option<PathBuf>,
     theme: Theme,
-    selected: bool
+    selected: bool,
+    icon_size: u16
 ) -> iced::widget::Button<'static, Message> {
     let mut _content: Row<'_, Message> = Row::new();
 
@@ -23,8 +24,8 @@ pub fn list_apps(
         if ext == "svg" {
             _content = row![
                 svg(path)
-                    .width(37)
-                    .height(37),
+                    .width(icon_size)
+                    .height(icon_size),
                 text(name)
             ]
             .spacing(10)
@@ -32,10 +33,10 @@ pub fn list_apps(
         // If icon is svg, i show with svg widget
         } else {
             // If icon is not svg, use image widget
-            if let Some(img) = resize_icon(path.as_path().to_str().unwrap_or_default(), 37){      
+            if let Some(img) = resize_icon(path.as_path().to_str().unwrap_or_default(), icon_size.into()){      
                 _content = row![image(img)
-                    .width(37)
-                    .height(37),
+                    .width(icon_size)
+                    .height(icon_size),
                 text(name)
             ].spacing(10);
             }else {

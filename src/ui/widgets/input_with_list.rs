@@ -11,8 +11,15 @@ pub fn input_with_list<'a>(
     list_column: Column<'a, Message>,
     text: &str,
     theme: &Theme,
-    input_text_size: u16
+    input_text_size: u16,
+    show_apps: bool
 ) -> iced::Element<'a, Message> {
+
+    let list_column = if show_apps == false && text.is_empty() {
+       Column::new()
+    }else {
+        list_column
+    };
 
     let palette = theme.palette();
 

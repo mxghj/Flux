@@ -13,6 +13,9 @@ fn main() -> iced::Result
             input_text_size: 18,
             app_width: 774.0,
             app_height: 500.0,
+            icon_size: 37,
+            show_apps: true,
+            close_on_launch: true
         }
     );
     // Get settings if get any errors put the default one

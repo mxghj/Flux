@@ -4,7 +4,7 @@ use iced::{Color, Theme, theme::Palette};
 use serde::{Deserialize, Serialize};
 use toml::{from_str, to_string};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Config {
     pub using: String,
     pub antialiasing: bool,
@@ -12,6 +12,9 @@ pub struct Config {
     pub input_text_size: u16,
     pub app_width: f32,
     pub app_height: f32,
+    pub icon_size: u16,
+    pub show_apps: bool,
+    pub close_on_launch: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,6 +46,9 @@ pub fn settings() -> Option<Config>{
             input_text_size: 18,
             app_width: 774.0,
             app_height: 500.0,
+            icon_size: 37,
+            show_apps: true,
+            close_on_launch: true,
         };
         // Default settings
 

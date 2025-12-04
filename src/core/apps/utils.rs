@@ -6,7 +6,7 @@ use image::ImageReader;
 
 use crate::{ui::app::{ Message}};
 
-pub fn open_app(entry_exec: String) -> Task<Message> {
+pub fn open_app(entry_exec: String, close_after_launch: bool) -> Task<Message> {
     let exec = entry_exec.clone();
     let path = std::path::Path::new(&exec);
     if path.exists() && path.is_file() {
@@ -21,7 +21,10 @@ pub fn open_app(entry_exec: String) -> Task<Message> {
             // Print error is cannot open 
         }
     }
-    window::get_latest().and_then(window::close)
+    if close_after_launch {
+        return window::get_latest().and_then(window::close);
+    }
+    Task::none()
 }
 
 pub fn last_modified(path: &Path) -> Option<u64> {

@@ -41,7 +41,7 @@ pub fn run_ui(apps: Vec<AppList>, settings: Config, theme: Theme) -> iced::Resul
     .theme(StrydeUI::theme)
     .subscription(StrydeUI::subscription)
     .run_with(move || {
-        let stryde = StrydeUI::new(apps, settings.input_text_size, theme);
+        let stryde = StrydeUI::new(apps, theme, settings);
 
         let focus_task = text_input::focus::<Message>("input");
         // Auto focus to input_text
@@ -60,7 +60,7 @@ pub fn run_ui(apps: Vec<AppList>, settings: Config, theme: Theme) -> iced::Resul
 pub enum Message {
     SearchChanged(String),
     Submit,
-    Open(String),
+    Open(String, bool),
     KeyEvent(Key)
 }
 
@@ -70,20 +70,20 @@ pub struct StrydeUI {
     app_list: Vec<AppList>,
     save_list: Vec<AppList>,
     selected: usize,
-    input_text_size: u16,
-    theme: Theme
+    theme: Theme,
+    config: Config,
 }
 
 impl StrydeUI {
-    fn new(app_list: Vec<AppList>, input_text_size: u16, theme: Theme) -> Self {
+    fn new(app_list: Vec<AppList>, theme: Theme, config: Config) -> Self {
         // make new app state with list of apps
         Self {
             text: "".into(),
             save_list: Vec::new(),
             app_list,
             selected: 0,
-            input_text_size: input_text_size.clone(),
-            theme: theme
+            theme: theme,
+            config: config
         }
     }
 
@@ -141,11 +141,11 @@ impl StrydeUI {
                     return Task::none();
                 
             }
-            Message::Open(entry_exec) => {
-                    open_app(entry_exec)
+            Message::Open(entry_exec, close_after_launch) => {
+                    open_app(entry_exec, close_after_launch)
             }
             Message::Submit => {
-                open_app(self.app_list[self.selected].exec.clone())
+                open_app(self.app_list[self.selected].exec.clone(), self.config.close_on_launch)
             }
             Message::KeyEvent(key) => {
                 match key {
@@ -197,10 +197,11 @@ impl StrydeUI {
                           Some(entry.icon_path.clone()),
                           self.theme().clone(),
                           self.selected == index,
-                        ).on_press(Message::Open(entry.exec.clone()))))
+                          self.config.icon_size
+                        ).on_press(Message::Open(entry.exec.clone(), self.config.close_on_launch))))
         } // Make a list with all apps
         
-        input_with_list(list_column, &self.text, &self.theme(), self.input_text_size)
+        input_with_list(list_column, &self.text, &self.theme(), self.config.input_text_size, self.config.show_apps)
         // Make a input, divider, list
     }
 }
